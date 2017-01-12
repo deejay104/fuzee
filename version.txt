@@ -1,0 +1,4 @@
+<?
+$myrev="1";
+$version = "0.0.".$myrev;
+?>

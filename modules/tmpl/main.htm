@@ -1,0 +1,94 @@
+<!-- BEGIN: main -->
+<!DOCTYPE html>
+<html>
+  <head>
+	<title>{site_title} - {module} - {rub}</title>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+	<link rel="stylesheet" href="{url_static}/style.css" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="external/jquery/css/smoothness/jquery-ui.css" />
+	<link rel="icon" type="image/png" href="favicon.png" />
+  </head>
+<body>
+
+	<script type="text/javascript" src="external/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="external/jquery/jquery-ui.min.js"></script>
+
+	<!-- This one in here is responsive menu for tablet and mobiles -->
+  <div id="responsive-navigation">
+  	<p class="responsive-extend">
+		<a href="#" class="menu-toggle-btn"><img src="{url_static}/icn32_extend.png" width="32" height="32"></a>
+	</p>
+	<div class="responsive-menu">
+		<p class="responsive-menulink">
+	   		<a href="index.php">{lang_main_home}</a>
+	<!-- BEGIN: menu_configuration_sm -->
+	   		<a href="index.php?mod=admin">Configurer</a>
+	<!-- END: menu_configuration_sm -->
+	   		<a href="login.php?f=logout">{lang_main_logout}</A><br />
+		</p>
+		<p style="text-align:center;"><a href="index.php?settheme=mobile" style=" color:white;">-{lang_main_affphone}-</a></p>
+    </div> <!-- /.main_menu -->
+
+  </div> <!-- /responsive_navigation -->
+
+	<div id="main-sidebar">
+		<div class="logo">
+			<a href="/"><img src="{url_static}/{site_logo}" alt="{site_title}" /></a>
+		</div> <!-- /.logo -->
+
+		<div class="navigation">
+			<ul class="main-menu">
+     		<li><a href="index.php">{lang_main_home}</a></li>
+<!-- BEGIN: lst_menu -->
+	   		<li><a href="index.php?p=view&v={lst_object}">{lst_obj_display}</a></li>
+<!-- END: lst_menu -->
+<!-- BEGIN: menu_configuration -->
+	   		<li><a href="index.php?mod=admin">Configurer</a></li>
+<!-- END: menu_configuration -->
+     		<li><a href="login.php?f=logout">{lang_main_logout}</A></li>
+       </ul> <!-- /.main_menu -->
+		</div> <!-- /.navigation -->
+	</div> <!-- /#main-sidebar -->
+
+
+<!--PageHeaderFmt-->
+	<div id="main-content">
+		<div class='head'>
+			<div class='pagetitle'>{header}</div>
+		</div>
+
+<!--PageTitleFmt-->
+		<div id='popup'></div>
+		<div class='main'>
+	    {main}
+		</div>
+	</div>
+
+<!--PageFooterFmt-->
+
+
+	<div class='footer'>
+		<div class='lastmod'>{username}&nbsp;-&nbsp;Version {version}</div>
+	</div>
+<!--/PageFooterFmt-->
+
+
+	<script>
+		jQuery(document).ready(function($){
+
+
+
+			/************** Responsive Navigation *********************/
+
+			$('.menu-toggle-btn').click(function(){
+				$('.responsive-menu').stop(true,true).slideToggle();
+			});
+
+
+
+
+		});
+	</script>
+</body>
+</html>
+<!-- END: main -->

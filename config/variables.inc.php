@@ -1,0 +1,16 @@
+<?
+$MyOpt["tbl"]="fz";
+$MyOpt["maintenance"]="off";
+$MyOpt["mydir"]="/var/www/html/update.php";
+$MyOpt["timezone"]="Europe/Berlin";
+$MyOpt["host"]="http://fuzee.adm.self.polypore.biz";
+$MyOpt["static"]="";
+$MyOpt["site_title"]="Fuzee";
+$MyOpt["site_logo"]="logo.png";
+$MyOpt["sendmail"]="off";
+$MyOpt["mail"]["smtp"]="1";
+$MyOpt["mail"]["host"]="localhost";
+$MyOpt["mail"]["port"]="25";
+$MyOpt["mail"]["username"]="";
+$MyOpt["mail"]["password"]="";
+?>

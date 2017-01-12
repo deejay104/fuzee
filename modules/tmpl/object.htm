@@ -1,0 +1,54 @@
+<!-- BEGIN: header -->
+{aff_object}
+<!-- END: header -->
+
+<!-- BEGIN: main -->
+
+<p class="lastupdate">{lang_object_lastupdate} : {aff_lastupdate}</p>
+<br />
+
+<form name="form_object" method="post" action="index.php" enctype="multipart/form-data">
+
+<input type="hidden" name="p" value="object">
+<input type="hidden" name="o" value="{form_object}">
+<input type="hidden" name="v" value="{form_view}">
+<input type="hidden" name="id" value="{form_id}">
+<input type="hidden" name="oid" value="{form_oid}">
+<input type="hidden" name="oo" value="{form_oo}">
+<input type="hidden" name="checktime" value="{form_checktime}">
+
+
+<div class="objectField">
+	<div class="objectform">
+<!-- BEGIN: lst_line -->
+		<p>
+		<label>{aff_field}</label>
+		{aff_value}
+		</p>
+<!-- END: lst_line -->
+	</div>
+</div>
+
+<div class="objectSubmit">
+	<input type="submit" name="f" id="enregistrer" value="{lang_save}">
+	<input type="submit" name="f" id="annuler" value="{lang_cancel}">
+</div>
+
+</form>
+
+<script>
+
+function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+  }
+
+</script>
+
+<!-- BEGIN: lst_related -->
+<div class="objectField">
+	<p>{lst_displayname}</p>
+	<iframe  src="index.php?tmpl=empty&p=view&v={lst_related}&rf={lst_rfield}&rid={lst_rid}&oo={lst_object}" onload="resizeIframe(this)" ></iframe>
+</div>
+<!-- END: lst_related -->
+
+<!-- END: main -->

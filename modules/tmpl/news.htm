@@ -1,0 +1,69 @@
+<!-- BEGIN: header -->
+Liste {header_view}
+<!-- END: header -->
+
+<!-- BEGIN: main -->
+
+<script>
+
+document.onkeypress = CaptureKeyPress;
+
+function CaptureKeyPress(e) {
+
+	if(window.event)
+	   key = window.event.keyCode;	//IE
+	else
+	   key = e.which;			//firefox
+
+	if (key==13)
+	  form_list.submit();
+	
+	return;
+}
+
+function SubmitSort(column,way,st) {
+	document.form_list.sort.value=column;
+	document.form_list.st.value=st;
+	if (way=="desc")
+	  { document.form_list.order.value=""; }
+	else
+	  { document.form_list.order.value="desc"; }
+	form_list.submit();
+}
+function SubmitPage(st) {
+	document.form_list.st.value=st;
+	form_list.submit();
+}
+
+</script>
+
+<form name="form_list" method="get" action="index.php" enctype="multipart/form-data">
+<input type="hidden" name="checktime" value="{form_checktime}">
+<input type="hidden" name="p" value="view">
+<input type="hidden" name="v" value="{aff_view}">
+<input type="hidden" name="sort" value="{tab_sort}">
+<input type="hidden" name="order" value="{tab_order}">
+<input type="hidden" name="st" value="{tab_start}">
+<input type="hidden" name="rf" value="{tab_rf}">
+<input type="hidden" name="rid" value="{tab_rid}">
+<input type="hidden" name="tmpl" value="{tab_tmpl}">
+
+<p class="clickButton">
+<a href="index.php?p=object&o={tab_object}&id=0&v={aff_view}&oo={aff_object}&oid={aff_oid}&chk={form_checktime}" target="_parent">{lang_view_new}</a>
+<a href="index.php?p=editlist&v={aff_view}" target="_parent">
+<img src="{url_static}/icn32_settings.png">
+</a>
+</p>
+
+<!-- BEGIN: lst_line -->
+<div class="newsBox">
+<!-- BEGIN: lst_col_line -->
+	<div class="newsMessage">{tab_line}</div>
+<!-- END: lst_col_line -->
+</div>
+<!-- END: lst_line -->
+
+{aff_pages}
+
+</form>
+<!-- END: main -->

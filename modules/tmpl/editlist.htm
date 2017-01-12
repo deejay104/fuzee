@@ -1,0 +1,70 @@
+<!-- BEGIN: header -->
+Configure {header_view}
+<!-- END: header -->
+
+<!-- BEGIN: main -->
+
+
+<script type="text/javascript">
+$(function() {
+    $( "#DropEnable" ).sortable({
+      connectWith: "ul",
+      update: function (event, ui) {
+	        var order = $(this).sortable('serialize');
+	
+	        // POST to server using $.post or $.ajax
+	        $.ajax({
+				data: order,
+	            type: 'POST',
+	            url: 'index.php?p=updlist&v={form_view}'
+	        });
+   		}
+    });
+
+ 
+
+    $( "#DropDisable" ).sortable({
+      connectWith: "ul"
+    });
+
+ 
+
+    $( "#DropEnable, #DropDisable" ).disableSelection();
+
+
+  });
+
+</script>
+
+<form name="form_list" method="get" action="index.php" enctype="multipart/form-data">
+<input type="hidden" name="checktime" value="{form_checktime}">
+<input type="hidden" name="p" value="editlist">
+<input type="hidden" name="v" value="{form_view}">
+
+<div class="objectform">
+<p><label>{lang_edit_displayname}</label><input type="text" id="form_displayname" value="{form_displayname}" name="dn"></p>
+</div>
+<div class="objectSubmit">
+<p><label></label><input type="submit" name="f" value="{lang_save}"></p>
+</div>
+
+<div>
+<ul id="DropEnable" class="dropBox dropEnable">
+<!-- BEGIN: lst_enabled -->
+		<li id="id_{aff_name}" class="ui-state-default">{aff_displayname}</li>
+<!-- END: lst_enabled -->
+</ul>
+</div>
+
+<br />
+
+<div>
+<ul id="DropDisable" class="dropBox">
+<!-- BEGIN: lst_disabled -->
+		<li id="id_{aff_name}" class="ui-state-default">{aff_displayname}</li>
+<!-- END: lst_disabled -->
+</ul>
+</div>
+
+</form>
+<!-- END: main -->
