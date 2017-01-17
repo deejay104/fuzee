@@ -52,7 +52,7 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 	$obj["type"]=strtolower($obj["type"]);
 	$obj["transform"]=strtolower($obj["transform"]);
 
-	if (($obj["readonly"]==1) && (!$new))
+	if (($obj["readonly"]==1) && ((!$new) || ($obj["system"]==1)))
 	{
 		$form="html";
 	}

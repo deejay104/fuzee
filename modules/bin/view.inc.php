@@ -49,7 +49,7 @@
 	}
 
 // ---- Load template
-	$tmpl_x=LoadTemplate($resv["type"]);
+	$tmpl_x=LoadTemplate("view.".$resv["type"]);
 
 // ---- Load object info
 	$query = "SELECT * FROM ".$MyOpt["tbl"]."_objects WHERE id='".$resv["oid"]."'";
