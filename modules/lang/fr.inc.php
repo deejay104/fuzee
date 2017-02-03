@@ -5,6 +5,8 @@
 	$tablang["lang_cancel"]="Annuler";
 	$tablang["lang_at"]="le";
 	$tablang["lang_textsearch"]="Texte à rechercher";
+	$tablang["yes"]="Oui";
+	$tablang["no"]="Non";
 	
 // ---- Login
 	$tablang["lang_login_text"]="Veuillez entrer votre adresse mail ainsi que votre mot de passe.";

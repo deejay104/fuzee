@@ -85,12 +85,12 @@
 	$query = "SELECT * FROM ".$MyOpt["tbl"]."_views_fields AS fields WHERE vid='".$resv["id"]."'  ORDER BY pos";
 	$sql_ro->Query($query);
 
-	$fields="id";
+	$fields="fields.id";
 	for($i=0; $i<$sql_ro->rows; $i++)
 	{ 
 		$sql_ro->GetRow($i);
-
-		$fields.=",".$sql_ro->data["name"];
+		
+		$fields.=",fields.".$sql_ro->data["name"];
 		
 		$tmpl_x->assign("tab_name", $sql_ro->data["name"]);
 		$tmpl_x->assign("tab_search", $mysearch[$sql_ro->data["name"]]);
@@ -117,28 +117,41 @@
 // ---- Load lines
 	$limit=20;
 
-	$query = "SELECT ".$fields." FROM ".$MyOpt["tbl"]."_".$reso["tablename"]." AS fields WHERE deleted=0 ";
+	$query = "SELECT ".$fields." FROM ".$MyOpt["tbl"]."_".$reso["tablename"]." AS fields ";
+	$qw="WHERE fields.deleted=0 ";
+	$qj="";
 	if (is_array($mysearch))
 	{
 		foreach($mysearch as $f=>$d)
 		{
 			if ($d!="")
 			{
-				$query.="AND ".$f." LIKE '%".$d."%' ";
+
+				if ($tabField[$f]["type"]=="link")
+				{
+					$qj.="LEFT JOIN ".$MyOpt["tbl"]."_".$tabField[$f]["link"]." AS j_".$f." ON fields.".$f."=j_".$f.".id ";
+					$qw.="AND j_".$f.".".$tabField[$f]["linkfield"]." LIKE '%".$d."%' ";
+				}
+				else
+				{
+					$qw.="AND ".$f." LIKE '%".$d."%' ";
+				}
 			}
 		}
 	}
 
 	if ($myrid>0)
 	{
-		$query.="AND ".$myrfield."='".$myrid."' ";
+		$qw.="AND ".$myrfield."='".$myrid."' ";
 	}
 	
+	$query.=$qj;
+	$query.=$qw;
 	$query.= (($mysort!="") ? "ORDER BY $mysort $myorder" : "");
 	$query.=" LIMIT $myst,$limit";
 	$sql_ro->Query($query);
 	$col=50;
-
+	
 	$tabList=array();
 	for($i=0; $i<$sql_ro->rows; $i++)
 	{ 
@@ -166,22 +179,9 @@
 		$tmpl_x->parse("main.lst_line");
 	}
 
-	$query = "SELECT COUNT(*) AS nb FROM ".$MyOpt["tbl"]."_".$reso["tablename"]." AS fields WHERE deleted=0 ";
-	if (is_array($mysearch))
-	{
-		foreach($mysearch as $f=>$d)
-		{
-			if ($d!="")
-			{
-				$query.="AND ".$f." LIKE '%".$d."%' ";
-			}
-		}
-	}
-
-	if ($myrid>0)
-	{
-		$query.="AND ".$myrfield."='".$myrid."' ";
-	}
+	$query = "SELECT COUNT(*) AS nb FROM ".$MyOpt["tbl"]."_".$reso["tablename"]." AS fields ";
+	$query.=$qj;
+	$query.=$qw;
 	$res=$sql_ro->QueryRow($query);
 
 	$nbtot=$res["nb"];

@@ -47,12 +47,13 @@ function CreateObject($name)
 
 // Display an object field
 function DisplayObject($obj,$var,$form="html",$new=false)	
-{ global $MyOpt,$sql_ro;
+{ global $MyOpt,$tablang,$sql_ro;
 	$txt=$var;
 	$obj["type"]=strtolower($obj["type"]);
 	$obj["transform"]=strtolower($obj["transform"]);
 
-	if (($obj["readonly"]==1) && ((!$new) || ($obj["system"]==1)))
+//	if (($obj["readonly"]==1) && ((!$new) || ($obj["system"]==1)))
+	if (($obj["readonly"]==1) && (!$new))
 	{
 		$form="html";
 	}
@@ -92,6 +93,63 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 		if ($obj["type"]=="text")
 		{
 			$txt="<textarea id='".$obj["name"]."' name='formArray[".$obj["name"]."]'>".$txt."</textarea>";
+		}
+		else if ($obj["type"]=="type")
+		{
+			$txt ="<select id='".$obj["name"]."' name='formArray[".$obj["name"]."]'>";
+			$txt.="<option value='smallstring'>Small String</option>";
+			$txt.="<option value='mediumstring'>Medium String</option>";
+			$txt.="<option value='largestring'>Large String</option>";
+			$txt.="<option value='string'>String</option>";
+			$txt.="<option value='text'>Text</option>";
+			$txt.="<option value='numeric'>Numeric</option>";
+			$txt.="<option value='link'>Link</option>";
+			$txt.="<option value='yesno'>Yes/No</option>";
+			$txt.="</select>";
+		}
+		else if ($obj["type"]=="yesno")
+		{
+			$v=$txt;
+			$txt ="<select id='".$obj["name"]."' name='formArray[".$obj["name"]."]'>";
+			$txt.="<option value='Y' ".(($v=="Y") ? "selected" : "").">".$tablang["yes"]."</option>";
+			$txt.="<option value='N' ".(($v=="N") ? "selected" : "").">".$tablang["no"]."</option>";
+			$txt.="</select>";
+		}
+		else if ($obj["type"]=="link")
+		{
+			$query ="SELECT COUNT(*) AS nb FROM ".$MyOpt["tbl"]."_".$obj["link"]." AS fields ";
+			$query.="WHERE fields.deleted=0  ";
+			$res=$sql_ro->QueryRow($query);
+
+			if ($res["nb"]>=20)
+			{
+				$txt ="<input name='formArray[".$obj["name"]."]' id='form_".$obj["name"]."' value='".$txt."' type='".$type."'>\n";
+
+				$txt.="<script type='text/javascript'>\n";
+				$txt.="$(function() {\n";
+				$txt.="$(\"#form_".$obj["name"]."\").autocomplete({\n";
+				$txt.="source: \"index.php?p=jquery&t=".$obj["link"]."&f=".$obj["linkfield"]."\",\n";
+				$txt.="delay: 0\n";
+				$txt.="});\n";
+				$txt.="});\n";
+				$txt.="</script>\n";
+			}
+			else
+			{
+				$v=$txt;
+				$query ="SELECT ".$obj["linkfield"]." AS txt FROM ".$MyOpt["tbl"]."_".$obj["link"]." AS fields ";
+				$query.="WHERE fields.deleted=0 ";
+				$query.="ORDER BY ".$obj["linkfield"]." ";
+				$sql_ro->Query($query);
+
+				$txt ="<select id='".$obj["name"]."' name='formArray[".$obj["name"]."]'>";
+				for($i=0; $i<$sql_ro->rows; $i++)
+				{ 
+					$sql_ro->GetRow($i);
+					$txt.="<option value='".$sql_ro->data["txt"]."' ".(($v==$sql_ro->data["txt"]) ? "selected" : "").">".$sql_ro->data["txt"]."</option>";
+				}
+				$txt.="</select>";
+			}
 		}
 		else
 		{
@@ -253,6 +311,10 @@ function SaveObject($id,$name,$tab,$conf)
 		else if ($tab["type"]=="numeric")
 		{
 			$type="INT(11)";
+		}
+		else if ($tab["type"]=="yesno")
+		{
+			$type="VARCHAR(1)";
 		}
 		else if ($tab["type"]=="link")
 		{
