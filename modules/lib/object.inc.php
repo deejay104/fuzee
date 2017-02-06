@@ -53,7 +53,8 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 	$obj["transform"]=strtolower($obj["transform"]);
 
 //	if (($obj["readonly"]==1) && ((!$new) || ($obj["system"]==1)))
-	if (($obj["readonly"]==1) && (!$new))
+// if ($obj["readonly"]==0) && 
+	if ( (($obj["readonly"]==1) && (!$new)) || ($obj["locked"]==1) )
 	{
 		$form="html";
 	}
@@ -97,10 +98,10 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 		else if ($obj["type"]=="type")
 		{
 			$txt ="<select id='".$obj["name"]."' name='formArray[".$obj["name"]."]'>";
-			$txt.="<option value='smallstring'>Small String</option>";
-			$txt.="<option value='mediumstring'>Medium String</option>";
-			$txt.="<option value='largestring'>Large String</option>";
-			$txt.="<option value='string'>String</option>";
+			$txt.="<option value='smallstring'>Small String (VAR20)</option>";
+			$txt.="<option value='mediumstring'>Medium String (VAR50)</option>";
+			$txt.="<option value='largestring'>Large String (VAR100)</option>";
+			$txt.="<option value='string'>String (VAR250)</option>";
 			$txt.="<option value='text'>Text</option>";
 			$txt.="<option value='numeric'>Numeric</option>";
 			$txt.="<option value='link'>Link</option>";
@@ -115,7 +116,7 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 			$txt.="<option value='N' ".(($v=="N") ? "selected" : "").">".$tablang["no"]."</option>";
 			$txt.="</select>";
 		}
-		else if ($obj["type"]=="link")
+		else if ( ($obj["type"]=="link") || ($obj["type"]=="syslink") )
 		{
 			$query ="SELECT COUNT(*) AS nb FROM ".$MyOpt["tbl"]."_".$obj["link"]." AS fields ";
 			$query.="WHERE fields.deleted=0  ";
@@ -150,6 +151,15 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 				}
 				$txt.="</select>";
 			}
+		}
+		else if ($obj["type"]=="transform")
+		{
+			$v=$txt;
+			$txt ="<select id='".$obj["name"]."' name='formArray[".$obj["name"]."]'>";
+			$txt.="<option value='uppercase' ".(($v=="uppercase") ? "selected" : "").">Upper case</option>";
+			$txt.="<option value='lowercase' ".(($v=="lowercase") ? "selected" : "").">Lower case</option>";
+			$txt.="<option value='ucword' ".(($v=="ucword") ? "selected" : "").">Upper word</option>";
+			$txt.="</select>";
 		}
 		else
 		{
@@ -255,18 +265,20 @@ function SaveObject($id,$name,$tab,$conf)
 
 		$query="ALTER TABLE `".$MyOpt["tbl"]."_".$tab["name"]."` ADD PRIMARY KEY (`id`);";
 		$sql_rw->Update($query);
+		$query="ALTER TABLE `".$MyOpt["tbl"]."_".$tab["name"]."` ADD INDEX (`system`);"; 
+		$sql_rw->Update($query);
 		$query="ALTER TABLE `".$MyOpt["tbl"]."_".$tab["name"]."` ADD INDEX (`deleted`);"; 
 		$sql_rw->Update($query);
 		$query="ALTER TABLE `".$MyOpt["tbl"]."_".$tab["name"]."` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;";
 		$sql_rw->Update($query);
 
-		$query="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET oid='".$id."', name='uidcreate', displayname='Created by', type='link', link='users', linkfield='login', system='1', hidden='1',uidcreate='".$gl_uid."',dtecreate='".now()."',uidupdate='".$gl_uid."',dteupdate='".now()."'";
+		$query="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET oid='".$id."', name='uidcreate', displayname='Created by', type='link', link='users', linkfield='login', system='1', hidden='1',locked=1,uidcreate='".$gl_uid."',dtecreate='".now()."',uidupdate='".$gl_uid."',dteupdate='".now()."'";
 		$sql_rw->Insert($query);
-		$query="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET oid='".$id."',name='dtecreate', displayname='Created', type='datetime', link='', linkfield='', system='1', hidden='1',uidcreate='".$gl_uid."',dtecreate='".now()."',uidupdate='".$gl_uid."',dteupdate='".now()."'";
+		$query="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET oid='".$id."',name='dtecreate', displayname='Created', type='datetime', link='', linkfield='', system='1', hidden='1', locked=1, uidcreate='".$gl_uid."',dtecreate='".now()."',uidupdate='".$gl_uid."',dteupdate='".now()."'";
 		$sql_rw->Insert($query);
-		$query="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET oid='".$id."',name='uidupdate', displayname='Updated by', type='link', link='users', linkfield='login', system='1', hidden='1',uidcreate='".$gl_uid."',dtecreate='".now()."',uidupdate='".$gl_uid."',dteupdate='".now()."'";
+		$query="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET oid='".$id."',name='uidupdate', displayname='Updated by', type='link', link='users', linkfield='login', system='1', hidden='1', locked=1, uidcreate='".$gl_uid."',dtecreate='".now()."',uidupdate='".$gl_uid."',dteupdate='".now()."'";
 		$sql_rw->Insert($query);
-		$query="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET oid='".$id."',name='dteupdate', displayname='Updated', type='datetime', link='', linkfield='', system='1', hidden='1',uidcreate='".$gl_uid."',dtecreate='".now()."',uidupdate='".$gl_uid."',dteupdate='".now()."'";
+		$query="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET oid='".$id."',name='dteupdate', displayname='Updated', type='datetime', link='', linkfield='', system='1', hidden='1', locked=1, uidcreate='".$gl_uid."',dtecreate='".now()."',uidupdate='".$gl_uid."',dteupdate='".now()."'";
 		$sql_rw->Insert($query);
 
 		$query="INSERT INTO `".$MyOpt["tbl"]."_views` SET name='".$tab["name"]."', displayname='".ucwords($tab["name"])."', oid='".$id."', type='list', uidcreate='".$gl_uid."',dtecreate='".now()."',uidupdate='".$gl_uid."',dteupdate='".now()."'";

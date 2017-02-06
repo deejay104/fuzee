@@ -1,0 +1,73 @@
+<!-- BEGIN: header -->
+Liste {header_view}
+<!-- END: header -->
+
+<!-- BEGIN: main -->
+
+<script>
+
+document.onkeypress = CaptureKeyPress;
+
+function CaptureKeyPress(e) {
+
+	if(window.event)
+	   key = window.event.keyCode;	//IE
+	else
+	   key = e.which;			//firefox
+
+	if (key==13)
+	  form_list.submit();
+	
+	return;
+}
+
+function SubmitSort(column,way) {
+	document.form_list.sort.value=column;
+	if (way=="desc")
+	  { document.form_list.order.value=""; }
+	else
+	  { document.form_list.order.value="desc"; }
+	form_list.submit();
+}
+
+</script>
+
+<form name="form_list" method="get" action="index.php" enctype="multipart/form-data">
+<input type="hidden" name="checktime" value="{form_checktime}">
+<input type="hidden" name="p" value="view">
+<input type="hidden" name="v" value="{aff_view}">
+<input type="hidden" name="sort" value="{tab_sort}">
+<input type="hidden" name="order" value="{tab_order}">
+
+<p class="clickButton">
+<a href="index.php?p=object&o={tab_object}&id=0&v={aff_view}&oo={aff_object}&oid={aff_oid}&chk={form_checktime}" target="_parent">{lang_view_new}</a>
+<a href="index.php?p=editlist&v={aff_view}" target="_parent">
+<img src="{url_static}/icn32_settings.png">
+</a>
+</p>
+<table class="tableList">
+<tr>
+<!-- BEGIN: lst_col_head -->
+	<th><a href="#" OnClick="SubmitSort('{tab_name}','{tab_order}');" {tab_selected}>{tab_header}
+<!-- BEGIN: lst_col_sort -->
+	<img src="{url_static}/icn16_order{tab_order}.png">
+<!-- END: lst_col_sort -->
+	</a></th>
+<!-- END: lst_col_head -->
+</tr>
+<tr class="tableSearch">
+<!-- BEGIN: lst_col_search -->
+	<th><input id="searchArray[{tab_name}]" name="searchArray[{tab_name}]" value="{tab_search}"></th>
+<!-- END: lst_col_search -->
+</tr>
+<!-- BEGIN: lst_line -->
+<tr>
+<!-- BEGIN: lst_col_line -->
+	<td ><a href="index.php?p=object&o={tab_object}&id={tab_id}&v={aff_view}" target="_parent">{tab_line}</a></td>
+<!-- END: lst_col_line -->
+</tr>
+<!-- END: lst_line -->
+</table>
+
+</form>
+<!-- END: main -->
