@@ -10,29 +10,6 @@
 	if (isset($_SESSION['gl_uid']))
 	  { $gl_uid = $_SESSION['gl_uid']; }
 
-// ---- Récupère les variables transmises
-	$username="";
-	$password="";
-	if (isset($_REQUEST['p']))
-	  { $rub=$_REQUEST["p"]; }
-	$username=$_REQUEST["username"];
-	$password=$_REQUEST["password"];
-	$myid=$_REQUEST["myid"];
-	$fonc=$_REQUEST["f"];
-	
-	if ($_REQUEST["varlogin"]!="")
-	  {
-	  	//eval("if (is_array(\$HTTP_".$_SERVER["REQUEST_METHOD"]."_VARS)) { foreach( \$HTTP_".$_SERVER["REQUEST_METHOD"]."_VARS as \$key=>\$value) { \$var .= \"&\$key=\$value\"; } }");
-	  	//$var.="&rub=$rub";
-		$var=$_REQUEST["varlogin"];
-	  }
-	else
-	  {
-	  	$var=$_SERVER["REQUEST_URI"];
-	  }
-
-	$var=preg_replace("/\/login.php/","",$var);
-
 // ---- Charge le numéro de version
 	require ("version.txt");
 
@@ -48,7 +25,29 @@
 	$lang="fr";
 	require ("modules/lang/".$lang.".inc.php");
 
-// ---- Gestion des thèmes
+// ---- Récupère les variables transmises
+	$username="";
+	$password="";
+	$rub=CheckVar("p","var",100);
+	$username=CheckVar("username","var",50);
+	$password=CheckVar("password","var",40);
+	$myid=CheckVar("myid","var",200);
+	$fonc=CheckVar("f","var",20);
+	
+	if ((isset($_REQUEST["varlogin"])) && ($_REQUEST["varlogin"]!=""))
+	  {
+	  	//eval("if (is_array(\$HTTP_".$_SERVER["REQUEST_METHOD"]."_VARS)) { foreach( \$HTTP_".$_SERVER["REQUEST_METHOD"]."_VARS as \$key=>\$value) { \$var .= \"&\$key=\$value\"; } }");
+	  	//$var.="&rub=$rub";
+		$var=$_REQUEST["varlogin"];
+	  }
+	else
+	  {
+	  	$var=$_SERVER["REQUEST_URI"];
+	  }
+
+	$var=preg_replace("/\/login.php/","",$var);
+
+	// ---- Gestion des thèmes
 	$theme="";
 	if ( (isset($_REQUEST["settheme"])) && ($_REQUEST["settheme"]!="") )
 	  {	
@@ -57,13 +56,12 @@
 	  }
 	else if ((isset($_SESSION['mytheme'])) && ($_SESSION['mytheme']!=""))
 	  {	$theme=$_SESSION['mytheme']; }
-	else if ($_SESSION['mytheme']=="")
+	else if ((isset($_SESSION['mytheme'])) && ($_SESSION['mytheme']==""))
 	  {
 		if ((preg_match("/CPU iPhone OS/",$_SERVER["HTTP_USER_AGENT"])) ||
 			(preg_match("/Linux; U; Android/",$_SERVER["HTTP_USER_AGENT"])) ||
 			(preg_match("/iPad; U; CPU OS/",$_SERVER["HTTP_USER_AGENT"])) || 
 			(preg_match("/Linux; Android/",$_SERVER["HTTP_USER_AGENT"])) 
-			
 		   )
 		  {
 			$theme="mobile";

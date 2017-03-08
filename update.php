@@ -132,10 +132,11 @@
 				PRIMARY KEY  (`id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;"; 
 
+		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_objects` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;";
 		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_objects`
 			ADD KEY `deleted` (`deleted`),
 			ADD KEY `system` (`system`)";
-
+  
 		$sql[] = "CREATE TABLE `".$MyOpt["tbl"]."_objects_fields` (
 			  `id` int(10) UNSIGNED NOT NULL,
 			  `oid` int(10) UNSIGNED NOT NULL,
@@ -159,6 +160,7 @@
 			 PRIMARY KEY  (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;"; 
 
+		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_objects_fields` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;";
 		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_objects_fields`
 			ADD KEY `deleted` (`deleted`),
 			ADD KEY `hidden` (`hidden`),
@@ -184,6 +186,7 @@
 			 PRIMARY KEY  (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;"; 
 
+		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_views` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;";
 		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_views`
 			ADD KEY `deleted` (`deleted`),
 			ADD KEY `hidden` (`hidden`),
@@ -195,52 +198,92 @@
 			`vid` int unsigned NOT NULL,
 			`name` varchar(50) NOT NULL default '',
 			`pos` tinyint(3) UNSIGNED NOT NULL,
+			`deleted` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
 			`uidcreate` int(10) UNSIGNED NOT NULL,
 			`dtecreate` datetime NOT NULL,
 			`uidupdate` int(10) UNSIGNED NOT NULL,
 			`dteupdate` datetime NOT NULL,
 			 PRIMARY KEY  (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;"; 
+
+		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_views_fields` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;";
+		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_views_fields`
+			ADD KEY `deleted` (`deleted`),
+			ADD KEY `vid` (`vid`);";
 			
 		$sql[] = "CREATE TABLE IF NOT EXISTS `".$MyOpt["tbl"]."_users` (
 			 `id` int unsigned NOT NULL auto_increment,
+			 `login` varchar(50) NOT NULL default '',
 			 `email` varchar(100) NOT NULL default '',
 			 `password` varchar(40) NOT NULL default '',
 			 `firstname` varchar(40) NOT NULL default '',
 			 `lastname` varchar(40) NOT NULL default '',
 			 `deleted` tinyint unsigned NOT NULL default '0',
+			 `system` tinyint unsigned NOT NULL default '0',
 			 `uidcreate` INT UNSIGNED NOT NULL, `dtecreate` DATETIME NOT NULL,
 			 `uidupdate` INT UNSIGNED DEFAULT NULL, `dteupdate` DATETIME DEFAULT NULL,
-			 PRIMARY KEY  (`id`),
-			 KEY `email` (`email`)
+			 PRIMARY KEY  (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;"; 
 
-			
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_users` (`id`,`email`,`password`,`firstname`,`lastname`, `uid_create`, `dte_create`) VALUES('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', 'admin', 1, NOW());";
+		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_users` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;";
+		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_users`
+			ADD KEY `deleted` (`deleted`),
+			ADD KEY `email` (`email`),
+			ADD KEY `login` (`login`);";
 
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects` (`id`,`name`,`system`, `uid_create`, `dte_create`,`postcreate`) VALUES(1,'objects', 1, 1, NOW(),'sysObject.create');";
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects` (`id`,`name`,`system`, `uid_create`, `dte_create`,`postcreate`) VALUES(2,'objects_fields', 1, 1, NOW(),'sysField.create');";
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects` (`id`,`name`,`system`, `uid_create`, `dte_create`) VALUES(3,'users', 1, 1, NOW());";
 
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`, `uid_create`, `dte_create`) VALUES(3,'email', 'Email', 'varchar', 1, 1, NOW());";
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`, `hidden`, `uid_create`, `dte_create`) VALUES(3,'password', 'Password', 'password', 1, 1, 1, NOW());";
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`, `uid_create`, `dte_create`) VALUES(3,'firstname', 'Firstname','varchar', 1, 1, NOW());";
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`, `uid_create`, `dte_create`) VALUES(3,'lastname', 'Lastname','varchar', 1, 1, NOW());";
+		
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_users` (`id`,`login`,`email`,`password`,`firstname`,`lastname`, `uidcreate`, `dtecreate`) VALUES ('1', 'admin', 'email@example.com', '21232f297a57a5a743894a0e4a801fc3', 'admin', 'admin', 1, NOW());";
 
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='uidcreate',`displayname`='Created by',`type`='link',`link`='user',`linkfield`='login',`system`=1, `locked`=1, `readonly`=1,`uid_create`=NOW();";
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='dtecreate',`displayname`='Created by',`type`='datetime',`system`=1, `locked`=1, `readonly`=1,`uid_create`=NOW();";
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='uidupdate',`displayname`='Updated by',`type`='link',`link`='user',`linkfield`='login',`system`=1, `locked`=1, `readonly`=1,`uid_create`=NOW();";
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='uidcreate',`displayname`='Created by',`type`='datetime',`system`=1, `locked`=1, `readonly`=1,`uid_create`=NOW();";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects` (`id`,`name`,`tablename`,`system`, `uidcreate`, `dtecreate`,`postcreate`) VALUES (1,'objects','objects', 1, 1, NOW(),'sysObject.create');";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects` (`id`,`name`,`tablename`,`system`, `uidcreate`, `dtecreate`,`postcreate`) VALUES (2,'objects_fields','objects_fields', 1, 1, NOW(),'sysField.create');";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects` (`id`,`name`,`tablename`,`system`, `uidcreate`, `dtecreate`) VALUES (3,'users','users', 1, 1, NOW());";
 
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views` (`id`,`name`,`type`,`system`, `uid_create`, `dte_create`) VALUES(1,'users', 'list', 1, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`, `uidcreate`, `dtecreate`) VALUES (1,'name', 'Name', 'varchar', 1, 1, NOW());";
 
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views_fields` (`vid`,`name`, `uid_create`, `dte_create`) VALUES(1,'firstname', 1, NOW());";
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views_fields` (`vid`,`name`, `uid_create`, `dte_create`) VALUES(1,'lastname', 1, NOW());";
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views_fields` (`vid`,`name`, `uid_create`, `dte_create`) VALUES(1,'email', 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`,`hidden`, `uidcreate`, `dtecreate`) VALUES (2,'oid', 'oid', 'int', 1, 1, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`,`readonly`, `uidcreate`, `dtecreate`) VALUES (2,'name', 'Name', 'mediumstring', 1, 1, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`, `uidcreate`, `dtecreate`) VALUES (2,'displayname', 'Displayname', 'mediumstring', 1, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`transform`,`system`,`readonly`,`uidcreate`, `dtecreate`) VALUES (2,'type', 'Type', 'type', 'uppercase', 1, 1, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`, `uidcreate`, `dtecreate`) VALUES (2,'transform', 'transform', 'transform', 1, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`link`,`linkfield`,`system`,`readonly`, `uidcreate`, `dtecreate`) VALUES (2,'link', 'link', 'syslink', 'objects', 'name', 1, 1, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`,`readonly`, `uidcreate`, `dtecreate`) VALUES (2,'linkfield', 'linkfield', 'sysfield', 1, 1, 1, NOW());";
 
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`, `uidcreate`, `dtecreate`) VALUES (3,'login', 'Login', 'varchar', 1, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`, `uidcreate`, `dtecreate`) VALUES (3,'email', 'Email', 'varchar', 1, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`, `hidden`, `uidcreate`, `dtecreate`) VALUES (3,'password', 'Password', 'password', 1, 1, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`, `uidcreate`, `dtecreate`) VALUES (3,'firstname', 'Firstname','varchar', 1, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`, `uidcreate`, `dtecreate`) VALUES (3,'lastname', 'Lastname','varchar', 1, 1, NOW());";
+
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='uidcreate',`displayname`='Created by',`type`='link',`link`='user',`linkfield`='login',`system`=1, `locked`=1, `readonly`=1,`uidcreate`=1,dtecreate=NOW();";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='dtecreate',`displayname`='Created by',`type`='datetime',`system`=1, `locked`=1, `readonly`=1,`uidcreate`=1,dtecreate=NOW();";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='uidupdate',`displayname`='Updated by',`type`='link',`link`='user',`linkfield`='login',`system`=1, `locked`=1, `readonly`=1,`uidcreate`=1,dtecreate=NOW();";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='uidcreate',`displayname`='Updated by',`type`='datetime',`system`=1, `locked`=1, `readonly`=1,`uidcreate`=1,dtecreate=NOW();";
+
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views` (`id`,`name`,`displayname`,`oid`,`type`,`system`, `uidcreate`, `dtecreate`) VALUES (1,'objects', 'Objects', 1, 'list', 1, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views_fields` (`vid`,`name`, `uidcreate`, `dtecreate`) VALUES (1,'name', 1, NOW());";
+
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views` (`id`,`name`,`displayname`,`oid`,`type`,`robject`,`rfield`,`system`, `uidcreate`, `dtecreate`) VALUES (2,'objects_fields', 'Fields', 2, 'list', 1, 'oid', 1, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views_fields` (`vid`,`name`,`pos`, `uidcreate`, `dtecreate`) VALUES (2,'name', 0, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views_fields` (`vid`,`name`,`pos`, `uidcreate`, `dtecreate`) VALUES (2,'displayname', 1, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views_fields` (`vid`,`name`,`pos`, `uidcreate`, `dtecreate`) VALUES (2,'type', 2, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views_fields` (`vid`,`name`,`pos`, `uidcreate`, `dtecreate`) VALUES (2,'transform', 3, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views_fields` (`vid`,`name`,`pos`, `uidcreate`, `dtecreate`) VALUES (2,'link', 4, 1, NOW());";
+
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views` (`id`,`name`,`displayname`,`oid`,`type`,`system`, `uidcreate`, `dtecreate`) VALUES (3,'users', 'Users', 3, 'list', 1, 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views_fields` (`vid`,`name`, `uidcreate`, `dtecreate`) VALUES (3,'firstname', 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views_fields` (`vid`,`name`, `uidcreate`, `dtecreate`) VALUES (3,'lastname', 1, NOW());";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views_fields` (`vid`,`name`, `uidcreate`, `dtecreate`) VALUES (3,'email', 1, NOW());";
+
+		
+		
 		UpdateDB($sql,"100");
 	}
 
+// *********************************************************************************************************
+
+	echo "<a href='index.php'>Login</a>";
+	
 // *********************************************************************************************************
 
 function UpdateDB($sql,$setver)

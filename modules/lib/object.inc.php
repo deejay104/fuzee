@@ -104,6 +104,8 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 			$txt.="<option value='string'>String (VAR250)</option>";
 			$txt.="<option value='text'>Text</option>";
 			$txt.="<option value='numeric'>Numeric</option>";
+			$txt.="<option value='date'>Date</option>";
+			$txt.="<option value='datetime'>Datetime</option>";
 			$txt.="<option value='link'>Link</option>";
 			$txt.="<option value='yesno'>Yes/No</option>";
 			$txt.="</select>";
@@ -144,6 +146,7 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 				$sql_ro->Query($query);
 
 				$txt ="<select id='".$obj["name"]."' name='formArray[".$obj["name"]."]'>";
+				$txt.="<option value='' ".(($v=="") ? "selected" : "").">None</option>";
 				for($i=0; $i<$sql_ro->rows; $i++)
 				{ 
 					$sql_ro->GetRow($i);
@@ -156,6 +159,7 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 		{
 			$v=$txt;
 			$txt ="<select id='".$obj["name"]."' name='formArray[".$obj["name"]."]'>";
+			$txt.="<option value='' ".(($v=="") ? "selected" : "").">None</option>";
 			$txt.="<option value='uppercase' ".(($v=="uppercase") ? "selected" : "").">Upper case</option>";
 			$txt.="<option value='lowercase' ".(($v=="lowercase") ? "selected" : "").">Lower case</option>";
 			$txt.="<option value='ucword' ".(($v=="ucword") ? "selected" : "").">Upper word</option>";

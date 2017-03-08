@@ -33,6 +33,12 @@ function MyRep($file,$dir='')
 // Check parameters
 function CheckVar($v,$type,$l)
 {
+	if (!isset($_REQUEST[$v]))
+	{ 
+		if ($type=="int")
+		{ return 0; }
+		return "";
+	}
 	$vv=substr($_REQUEST[$v],0,$l);
 	$vv=preg_replace("/[;]*/","",$vv);
 
