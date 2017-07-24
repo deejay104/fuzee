@@ -93,7 +93,17 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 		$txt=utf8_decode($txt);
 		if ($obj["type"]=="text")
 		{
-			$txt="<textarea id='".$obj["name"]."' name='formArray[".$obj["name"]."]'>".$txt."</textarea>";
+			$txt="<textarea id='form_".$obj["name"]."' name='formArray[".$obj["name"]."]'>".$txt."</textarea>";
+		}
+		else if ($obj["type"]=="html")
+		{
+			$t=$txt;
+			$txt="<textarea id='form_".$obj["name"]."' name='formArray[".$obj["name"]."]'>".$t."</textarea>";
+			$txt.="<script>";
+			$txt.="$(function() {\n";
+			$txt.="$('#form_".$obj["name"]."').trumbowyg();";
+			$txt.="});</script>";
+
 		}
 		else if ($obj["type"]=="type")
 		{
@@ -103,6 +113,7 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 			$txt.="<option value='largestring'>Large String (VAR100)</option>";
 			$txt.="<option value='string'>String (VAR250)</option>";
 			$txt.="<option value='text'>Text</option>";
+			$txt.="<option value='html'>HTML</option>";
 			$txt.="<option value='numeric'>Numeric</option>";
 			$txt.="<option value='date'>Date</option>";
 			$txt.="<option value='datetime'>Datetime</option>";
@@ -236,7 +247,8 @@ function SaveObject($id,$name,$tab,$conf)
 			}
 			else
 			{
-				$query.=$f."='".utf8_encode(substr($d,0,50))."', ";
+				// $query.=$f."='".utf8_encode(substr($d,0,50))."', ";
+				$query.=$f."='".utf8_encode($d)."', ";
 			}
 		}
 	}
@@ -244,7 +256,6 @@ function SaveObject($id,$name,$tab,$conf)
 	$query.="uidupdate='".$gl_uid."', ";
 	$query.="dteupdate=NOW() ";
 	$query.="WHERE id='".$id."'";
-
 	$sql_rw->Update($query);
 
 	$query="SELECT system FROM ".$MyOpt["tbl"]."_".$res_obj["tablename"]." WHERE id='".$id."'";
@@ -321,6 +332,10 @@ function SaveObject($id,$name,$tab,$conf)
 			$type="VARCHAR(250)";
 		}
 		else if ($tab["type"]=="text")
+		{
+			$type="TEXT";
+		}
+		else if ($tab["type"]=="html")
 		{
 			$type="TEXT";
 		}
