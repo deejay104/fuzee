@@ -10,10 +10,10 @@
 	if (isset($_SESSION['gl_uid']))
 	  { $gl_uid = $_SESSION['gl_uid']; }
 
-// ---- Charge le numéro de version
+// ---- Charge le numÃ©ro de version
 	require ("version.txt");
 
-// ---- Charge les prérequis
+// ---- Charge les prÃ©requis
 	require ("class/xtpl.inc.php");
 	require ("class/mysql.inc.php");
 
@@ -25,7 +25,7 @@
 	$lang="fr";
 	require ("modules/lang/".$lang.".inc.php");
 
-// ---- Récupère les variables transmises
+// ---- RÃ©cupÃ¨re les variables transmises
 	$username="";
 	$password="";
 	$rub=CheckVar("p","var",100);
@@ -47,7 +47,7 @@
 
 	$var=preg_replace("/\/login.php/","",$var);
 
-	// ---- Gestion des thèmes
+	// ---- Gestion des thÃ¨mes
 	$theme="";
 	if ( (isset($_REQUEST["settheme"])) && ($_REQUEST["settheme"]!="") )
 	  {	
@@ -71,7 +71,7 @@
 	  }
 
 
-// ---- Test si l'on a validé la page
+// ---- Test si l'on a validÃ© la page
 	$ok=0;
 	$errmsg="";
 	

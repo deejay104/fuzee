@@ -4,7 +4,7 @@
 	$tablang["lang_save"]="Enregistrer";
 	$tablang["lang_cancel"]="Annuler";
 	$tablang["lang_at"]="le";
-	$tablang["lang_textsearch"]="Texte à rechercher";
+	$tablang["lang_textsearch"]="Texte Ã  rechercher";
 	$tablang["yes"]="Oui";
 	$tablang["no"]="Non";
 	
@@ -15,11 +15,11 @@
 	
 // ---- Main
 	$tablang["lang_main_home"]="Accueil";
-	$tablang["lang_main_logout"]="Déconnexion";
+	$tablang["lang_main_logout"]="DÃ©connexion";
 	$tablang["lang_main_affphone"]="Affichage smartphone";
 
 // ---- Objects
-	$tablang["lang_object_lastupdate"]="Dernière mise à jour";
+	$tablang["lang_object_lastupdate"]="DerniÃ¨re mise Ã  jour";
 
 // ---- Views
 	$tablang["lang_view_new"]="Nouveau";

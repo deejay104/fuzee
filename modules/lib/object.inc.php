@@ -90,7 +90,7 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 	
 	if ($form=="form")
 	{
-		// $txt=utf8_decode($txt);
+		$txt=utf8_encode($txt);
 		if ($obj["type"]=="text")
 		{
 			$txt="<textarea id=\"form_".$obj["name"]."\" name=\"formArray[".$obj["name"]."]\">".$txt."</textarea>";
@@ -100,9 +100,11 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 			$t=$txt;
 			$txt="<textarea id=\"form_".$obj["name"]."\" name=\"formArray[".$obj["name"]."]\">".$t."</textarea>";
 			$txt.="<script>";
-			$txt.="$(function() {\n";
-			$txt.="$('#form_".$obj["name"]."').trumbowyg();";
-			$txt.="});</script>";
+			// $txt.="$(function() {\n";
+			$txt.="$('#form_".$obj["name"]."').trumbowyg({";
+			$txt.="btnsAdd: ['table']";
+			$txt.="});";
+			$txt.="</script>";
 
 		}
 		else if ($obj["type"]=="type")
@@ -162,7 +164,7 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 				for($i=0; $i<$sql_ro->rows; $i++)
 				{ 
 					$sql_ro->GetRow($i);
-					$txt.="<option value=\"".$sql_ro->data["txt"]."\" ".(($v==$sql_ro->data["txt"]) ? "selected" : "").">".$sql_ro->data["txt"]."</option>";
+					$txt.="<option value=\"".utf8_encode($sql_ro->data["txt"])."\" ".(($v==utf8_encode($sql_ro->data["txt"])) ? "selected" : "").">".utf8_encode($sql_ro->data["txt"])."</option>";
 				}
 				$txt.="</select>";
 			}
@@ -179,7 +181,7 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 		}
 		else if ($obj["type"]=="password")
 		{
-			$txt="<input name='formArray[".$obj["name"]."]' value='".$txt."' type='password'>";
+			$txt="<input name='formArray[".$obj["name"]."]' value='' type='password'>";
 		}
 		else
 		{
@@ -245,8 +247,7 @@ function SaveObject($id,$name,$tab,$conf)
 				}	
 				else
 				{
-
-			$q="SELECT id FROM ".$MyOpt["tbl"]."_".$tabField[$f]["link"]." WHERE ".$tabField[$f]["linkfield"]."='".addslashes($d)."'";
+					$q="SELECT id FROM ".$MyOpt["tbl"]."_".$tabField[$f]["link"]." WHERE ".$tabField[$f]["linkfield"]."='".utf8_decode(addslashes($d))."'";
 					$resd=$sql_ro->QueryRow($q);
 					$query.=$f."='".$resd["id"]."', ";					
 				}
@@ -258,7 +259,7 @@ function SaveObject($id,$name,$tab,$conf)
 			else
 			{
 				// $query.=$f."='".utf8_encode(substr($d,0,50))."', ";
-				$query.=$f."='".addslashes($d)."', ";
+				$query.=$f."='".utf8_decode(addslashes($d))."', ";
 			}
 		}
 	}

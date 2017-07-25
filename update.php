@@ -130,7 +130,7 @@
 				  `uidupdate` int(10) UNSIGNED NOT NULL,
 				  `dteupdate` datetime NOT NULL,
 				PRIMARY KEY  (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;"; 
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;"; 
 
 		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_objects` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;";
 		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_objects`
@@ -158,7 +158,7 @@
 			  `uidupdate` int(10) UNSIGNED NOT NULL,
 			  `dteupdate` datetime NOT NULL,
 			 PRIMARY KEY  (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;"; 
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;"; 
 
 		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_objects_fields` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;";
 		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_objects_fields`
@@ -184,7 +184,7 @@
 			  `uidupdate` int(10) UNSIGNED NOT NULL,
 			  `dteupdate` datetime NOT NULL,
 			 PRIMARY KEY  (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;"; 
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;"; 
 
 		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_views` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;";
 		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_views`
@@ -204,7 +204,7 @@
 			`uidupdate` int(10) UNSIGNED NOT NULL,
 			`dteupdate` datetime NOT NULL,
 			 PRIMARY KEY  (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;"; 
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;"; 
 
 		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_views_fields` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;";
 		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_views_fields`
@@ -223,7 +223,7 @@
 			 `uidcreate` INT UNSIGNED NOT NULL, `dtecreate` DATETIME NOT NULL,
 			 `uidupdate` INT UNSIGNED DEFAULT NULL, `dteupdate` DATETIME DEFAULT NULL,
 			 PRIMARY KEY  (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;"; 
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;"; 
 
 		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_users` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;";
 		$sql[]="ALTER TABLE `".$MyOpt["tbl"]."_users`
