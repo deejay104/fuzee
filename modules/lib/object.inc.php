@@ -90,15 +90,15 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 	
 	if ($form=="form")
 	{
-		$txt=utf8_decode($txt);
+		// $txt=utf8_decode($txt);
 		if ($obj["type"]=="text")
 		{
-			$txt="<textarea id='form_".$obj["name"]."' name='formArray[".$obj["name"]."]'>".$txt."</textarea>";
+			$txt="<textarea id=\"form_".$obj["name"]."\" name=\"formArray[".$obj["name"]."]\">".$txt."</textarea>";
 		}
 		else if ($obj["type"]=="html")
 		{
 			$t=$txt;
-			$txt="<textarea id='form_".$obj["name"]."' name='formArray[".$obj["name"]."]'>".$t."</textarea>";
+			$txt="<textarea id=\"form_".$obj["name"]."\" name=\"formArray[".$obj["name"]."]\">".$t."</textarea>";
 			$txt.="<script>";
 			$txt.="$(function() {\n";
 			$txt.="$('#form_".$obj["name"]."').trumbowyg();";
@@ -119,6 +119,7 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 			$txt.="<option value='datetime'>Datetime</option>";
 			$txt.="<option value='link'>Link</option>";
 			$txt.="<option value='yesno'>Yes/No</option>";
+			$txt.="<option value='password'>Password</option>";
 			$txt.="</select>";
 		}
 		else if ($obj["type"]=="yesno")
@@ -137,7 +138,7 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 
 			if ($res["nb"]>=20)
 			{
-				$txt ="<input name='formArray[".$obj["name"]."]' id='form_".$obj["name"]."' value='".$txt."' type='".$type."'>\n";
+				$txt ="<input name=\"formArray[".$obj["name"]."]\" id=\"form_".$obj["name"]."\" value=\"".$txt."\" type=\"".$type."\">\n";
 
 				$txt.="<script type='text/javascript'>\n";
 				$txt.="$(function() {\n";
@@ -157,11 +158,11 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 				$sql_ro->Query($query);
 
 				$txt ="<select id='".$obj["name"]."' name='formArray[".$obj["name"]."]'>";
-				$txt.="<option value='' ".(($v=="") ? "selected" : "").">None</option>";
+				$txt.="<option value=\"\" ".(($v=="") ? "selected" : "").">None</option>";
 				for($i=0; $i<$sql_ro->rows; $i++)
 				{ 
 					$sql_ro->GetRow($i);
-					$txt.="<option value='".$sql_ro->data["txt"]."' ".(($v==$sql_ro->data["txt"]) ? "selected" : "").">".$sql_ro->data["txt"]."</option>";
+					$txt.="<option value=\"".$sql_ro->data["txt"]."\" ".(($v==$sql_ro->data["txt"]) ? "selected" : "").">".$sql_ro->data["txt"]."</option>";
 				}
 				$txt.="</select>";
 			}
@@ -176,9 +177,13 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 			$txt.="<option value='ucword' ".(($v=="ucword") ? "selected" : "").">Upper word</option>";
 			$txt.="</select>";
 		}
+		else if ($obj["type"]=="password")
+		{
+			$txt="<input name='formArray[".$obj["name"]."]' value='".$txt."' type='password'>";
+		}
 		else
 		{
-			$txt="<input name='formArray[".$obj["name"]."]' value='".$txt."' type='".$type."'>";
+		$txt="<input name=\"formArray[".$obj["name"]."]\" value=\"".$txt."\" type=\"".$type."\">";
 		}
 	}
 	else
@@ -240,15 +245,20 @@ function SaveObject($id,$name,$tab,$conf)
 				}	
 				else
 				{
-					$q="SELECT id FROM ".$MyOpt["tbl"]."_".$tabField[$f]["link"]." WHERE ".$tabField[$f]["linkfield"]."='".$d."'";
+
+			$q="SELECT id FROM ".$MyOpt["tbl"]."_".$tabField[$f]["link"]." WHERE ".$tabField[$f]["linkfield"]."='".addslashes($d)."'";
 					$resd=$sql_ro->QueryRow($q);
 					$query.=$f."='".$resd["id"]."', ";					
 				}
 			}
+			else if (($tabField[$f]["type"]=="password") && ($d!=''))
+			{
+				$query.=$f."='".md5($d)."', ";
+			}
 			else
 			{
 				// $query.=$f."='".utf8_encode(substr($d,0,50))."', ";
-				$query.=$f."='".utf8_encode($d)."', ";
+				$query.=$f."='".addslashes($d)."', ";
 			}
 		}
 	}

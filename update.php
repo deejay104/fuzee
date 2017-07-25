@@ -255,10 +255,10 @@
 		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`, `uidcreate`, `dtecreate`) VALUES (3,'firstname', 'Firstname','varchar', 1, 1, NOW());";
 		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` (`oid`,`name`,`displayname`,`type`,`system`, `uidcreate`, `dtecreate`) VALUES (3,'lastname', 'Lastname','varchar', 1, 1, NOW());";
 
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='uidcreate',`displayname`='Created by',`type`='link',`link`='user',`linkfield`='login',`system`=1, `locked`=1, `readonly`=1,`uidcreate`=1,dtecreate=NOW();";
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='dtecreate',`displayname`='Created by',`type`='datetime',`system`=1, `locked`=1, `readonly`=1,`uidcreate`=1,dtecreate=NOW();";
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='uidupdate',`displayname`='Updated by',`type`='link',`link`='user',`linkfield`='login',`system`=1, `locked`=1, `readonly`=1,`uidcreate`=1,dtecreate=NOW();";
-		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='uidcreate',`displayname`='Updated by',`type`='datetime',`system`=1, `locked`=1, `readonly`=1,`uidcreate`=1,dtecreate=NOW();";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='uidcreate',`displayname`='Created by',`type`='link',`link`='users',`linkfield`='login',`system`=1, `locked`=1, `readonly`=1,`uidcreate`=1,dtecreate=NOW();";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='dtecreate',`displayname`='Created',`type`='datetime',`system`=1, `locked`=1, `readonly`=1,`uidcreate`=1,dtecreate=NOW();";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='uidupdate',`displayname`='Updated by',`type`='link',`link`='users',`linkfield`='login',`system`=1, `locked`=1, `readonly`=1,`uidcreate`=1,dtecreate=NOW();";
+		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_objects_fields` SET `oid`=3,`name`='dteupdate',`displayname`='Updated',`type`='datetime',`system`=1, `locked`=1, `readonly`=1,`uidcreate`=1,dtecreate=NOW();";
 
 		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views` (`id`,`name`,`displayname`,`oid`,`type`,`system`, `uidcreate`, `dtecreate`) VALUES (1,'objects', 'Objects', 1, 'list', 1, 1, NOW());";
 		$sql[]="INSERT INTO `".$MyOpt["tbl"]."_views_fields` (`vid`,`name`, `uidcreate`, `dtecreate`) VALUES (1,'name', 1, NOW());";
