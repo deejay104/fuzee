@@ -192,6 +192,7 @@
 		$tmpl_prg->assign("lst_object", $sql_ro->data["name"]);
 		$tmpl_prg->assign("lst_obj_display", $sql_ro->data["displayname"]);
 		$tmpl_prg->parse("main.lst_menu"); 
+		$tmpl_prg->parse("main.lst_menu2"); 
 	}
 
 // ---- Charge la rubrique

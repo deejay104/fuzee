@@ -37,6 +37,10 @@
   min-height: 300px;
   margin: 17px auto; }
 
+.trumbowyg-editor a {
+	background-color: #aaaaaa;
+}
+
 .trumbowyg-box .trumbowyg-editor {
   margin: 0 auto; }
 

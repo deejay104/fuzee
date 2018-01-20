@@ -62,10 +62,10 @@
 	for($i=0; $i<$sql_ro->rows; $i++)
 	{ 
 		$sql_ro->GetRow($i);
-		if ($sql_ro->data["name"]!="id")
-		{
+		// if ($sql_ro->data["name"]!="id")
+		// {
 			$tabField[$sql_ro->data["name"]]=$sql_ro->data;
-		}
+		// }
 	}
 
 // ---- Set standard value
@@ -85,12 +85,15 @@
 	$query = "SELECT * FROM ".$MyOpt["tbl"]."_views_fields AS fields WHERE vid='".$resv["id"]."'  ORDER BY pos";
 	$sql_ro->Query($query);
 
-	$fields="fields.id";
+	$fields="";
+	$tabTitle=array();
+	
 	for($i=0; $i<$sql_ro->rows; $i++)
 	{ 
 		$sql_ro->GetRow($i);
 		
 		$fields.=",fields.".$sql_ro->data["name"];
+		$tabTitle[$sql_ro->data["name"]]=$i;
 		
 		$tmpl_x->assign("tab_name", $sql_ro->data["name"]);
 		$tmpl_x->assign("tab_search", $mysearch[$sql_ro->data["name"]]);
@@ -110,6 +113,15 @@
 
 	}
 
+	if (!isset($tabTitle["id"]))
+	{
+		$fields="fields.id".$fields;
+	}
+	else
+	{
+		$fields="''".$fields;
+	}
+	
 	$tmpl_x->assign("tab_object", $reso["name"]);
 	$tmpl_x->assign("aff_object", $myoo);
 	$tmpl_x->assign("aff_oid", $myrid);
@@ -166,14 +178,16 @@
 		$tmpl_x->assign("tab_color2",$myColor[$col+5]);
 		$col = abs($col-110);
 
-		foreach($field as $f=>$d)
+		foreach($tabTitle as $f=>$dd)
+		// foreach($field as $f=>$d)
 		{
-			if (($f!="id") && (!is_numeric($f)))
-			{
+			// if (($f!="id") && (!is_numeric($f)))
+			// if (!is_numeric($f))
+			// {
 //				$tmpl_x->assign("tab_line", htmlentities(DisplayObject($tabField["$f"],$d,"html"),ENT_HTML5));
-				$tmpl_x->assign("tab_line", DisplayObject($tabField["$f"],$d,"html"));
+				$tmpl_x->assign("tab_line", DisplayObject($tabField[$f],$field[$f],"html"));
 				$tmpl_x->parse("main.lst_line.lst_col_line");
-			}
+			// }
 		}
 
 		$tmpl_x->parse("main.lst_line");

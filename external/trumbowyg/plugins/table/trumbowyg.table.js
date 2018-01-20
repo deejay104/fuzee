@@ -94,7 +94,7 @@
                                     }
                                 },
                                 function (v) { // v is value
-                                    var tabler = $('<table></table>');
+                                    var tabler = $('<table class="objectTable"></table>');
                                     if (v.styler.length !== 0) {
                                         tabler.addClass(v.styler);
                                     }

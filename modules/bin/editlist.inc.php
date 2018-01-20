@@ -53,11 +53,11 @@
 	for($i=0; $i<$sql_ro->rows; $i++)
 	{ 
 		$sql_ro->GetRow($i);
-		if ($sql_ro->data["name"]!="id")
-		{
+		// if ($sql_ro->data["name"]!="id")
+		// {
 			$tabField[$sql_ro->data["name"]]['name']=$sql_ro->data["displayname"];
 			$tabField[$sql_ro->data["name"]]['show']="yes";
-		}
+		// }
 	}
 
 

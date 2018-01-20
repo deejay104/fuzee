@@ -102,7 +102,7 @@ function DisplayObject($obj,$var,$form="html",$new=false)
 			$txt.="<script>";
 			// $txt.="$(function() {\n";
 			$txt.="$('#form_".$obj["name"]."').trumbowyg({";
-			$txt.="btnsAdd: ['table']";
+			$txt.="btns: [['viewHTML'],'btnGrp-design',['foreColor'],['superscript', 'subscript'],['link'],['insertImage'],['table'],'btnGrp-justify','btnGrp-lists',['horizontalRule'],['removeformat']]";
 			$txt.="});";
 			$txt.="</script>";
 
